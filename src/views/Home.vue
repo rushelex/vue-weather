@@ -30,32 +30,34 @@
         </div>
         <div class="main__body">
           <div class="main__forecast-day forecast-day">
-            <div
-              class="forecast-day__item item"
-              v-for="item in getForecastListOfDay(this.forecastList)"
-              :key="item.dt"
-            >
-              <div class="item__temp">
-                <span class="item__temp-number">{{
-                  getTempC(item.main.temp)
-                }}</span>
-                <span class="item__temp-unit"> °C</span>
+            <div class="forecast-day__inner">
+              <div
+                class="forecast-day__item item"
+                v-for="item in getForecastListOfDay(this.forecastList)"
+                :key="item.dt"
+              >
+                <div class="item__temp">
+                  <span class="item__temp-number">{{
+                    getTempC(item.main.temp)
+                  }}</span>
+                  <span class="item__temp-unit"> °C</span>
+                </div>
+                <div class="item__descr">
+                  <span>{{
+                    transformFirstSymbol(item.weather[0].description)
+                  }}</span>
+                </div>
+                <div class="item__time">
+                  <span>{{ getTime(item.dt) }}</span>
+                </div>
+                <img
+                  class="item__icon"
+                  :src="
+                    `http://openweathermap.org/img/wn/${item.weather[0].icon}.png`
+                  "
+                  alt="Weather icon"
+                />
               </div>
-              <div class="item__descr">
-                <span>{{
-                  transformFirstSymbol(item.weather[0].description)
-                }}</span>
-              </div>
-              <div class="item__time">
-                <span>{{ getTime(item.dt) }}</span>
-              </div>
-              <img
-                class="item__icon"
-                :src="
-                  `http://openweathermap.org/img/wn/${item.weather[0].icon}.png`
-                "
-                alt="Weather icon"
-              />
             </div>
           </div>
         </div>
@@ -372,11 +374,15 @@ export default {
 }
 
 .forecast-day {
+  position: relative;
   margin-top: 20px;
   padding: 20px 0;
-  display: flex;
   border-top: 1px solid #e0e0e0;
-  overflow: auto;
+
+  &__inner {
+    display: flex;
+    overflow: auto;
+  }
 
   &__item {
     padding: 0 10px;
@@ -628,6 +634,21 @@ export default {
   }
 
   .forecast-day {
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 15px;
+      background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 1) 100%
+      );
+      pointer-events: none;
+    }
+
     .item {
       &__icon {
         right: 0;

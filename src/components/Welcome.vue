@@ -7,6 +7,7 @@
           type="text"
           class="welcome__input welcome__input--api"
           placeholder="API-ключ"
+          autofocus
           v-model="localApiKey"
           @keypress.enter="setApiKey(localApiKey)"
         />
@@ -138,6 +139,22 @@ export default {
 
   > .card {
     max-width: 500px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .welcome {
+    padding: 0 15px;
+
+    &__body {
+      height: initial;
+      flex-direction: column;
+    }
+
+    &__submit {
+      margin-top: 15px;
+      margin-left: initial;
+    }
   }
 }
 </style>
