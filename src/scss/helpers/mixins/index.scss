@@ -1,0 +1,30 @@
+@mixin placeholder {
+  &::-webkit-input-placeholder {
+    @content;
+  }
+
+  &::-moz-placeholder {
+    @content;
+  }
+
+  &:-moz-placeholder {
+    @content;
+  }
+
+  &:-ms-input-placeholder {
+    @content;
+  }
+}
+
+@mixin buttonReset {
+  position: relative;
+  font: inherit;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  border: none;
+  border-radius: 0;
+  background-color: transparent;
+  outline: none;
+}
