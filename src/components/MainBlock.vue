@@ -1,15 +1,35 @@
 <template>
   <Card class="main">
     <div class="main__header">
-      <div class="main__temp temp">
+      <Skeleton
+        v-if="loading && !today.temp"
+        width="100px"
+        height="100px"
+        class="main__temp temp"
+      />
+      <div v-else class="main__temp temp">
         <span class="temp__number">{{ getTempC(today.temp) }}</span>
         <span class="temp__unit"> °C</span>
       </div>
-      <div v-if="today.date" class="main__title title">
+
+      <Skeleton
+        v-if="loading && !today.date"
+        width="200px"
+        height="50px"
+        class="main__title title"
+      />
+      <div v-else class="main__title title">
         <span>{{ this.activeDay }}</span>
       </div>
+
+      <Skeleton
+        v-if="loading && !today.icon"
+        width="100px"
+        height="100px"
+        class="main__icon"
+      />
       <img
-        v-if="today.icon"
+        v-else
         class="main__icon"
         :src="`http://openweathermap.org/img/wn/${today.icon}@2x.png`"
         alt="Weather icon"
@@ -30,6 +50,7 @@
 
 <script>
 import Card from "@/components/Card.vue";
+import Skeleton from "@/components/Skeleton.vue";
 import ForecastDay from "@/components/ForecastDay.vue";
 
 export default {
@@ -37,6 +58,7 @@ export default {
 
   components: {
     Card,
+    Skeleton,
     ForecastDay
   },
 
@@ -47,6 +69,12 @@ export default {
     getTime: Function,
     getTempC: Function,
     getConvertedDate: Function
+  },
+
+  computed: {
+    loading() {
+      return this.$store.state.loading;
+    }
   }
 };
 </script>
@@ -73,6 +101,10 @@ export default {
     pointer-events: none;
     user-select: none;
     -webkit-user-drag: none;
+
+    &.skeleton {
+      filter: initial;
+    }
   }
 
   .temp {
@@ -119,6 +151,10 @@ export default {
       top: initial;
       bottom: -20px;
       transform: initial;
+
+      &.skeleton {
+        bottom: 0;
+      }
     }
 
     .title {

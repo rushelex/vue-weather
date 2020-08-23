@@ -1,5 +1,7 @@
 <template>
   <div class="home">
+    <Toast :error="this.error" />
+
     <transition name="fade">
       <Welcome
         v-if="!localStorageApiKey && !storeApiKey"
@@ -30,13 +32,18 @@
     </transition>
 
     <transition name="fade">
-      <Map :coords="mapCoords" :findLocation="findLocation" />
+      <Map
+        v-if="storeApiKey"
+        :coords="mapCoords"
+        :findLocation="findLocation"
+      />
     </transition>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import Toast from "@/components/Toast.vue";
 import Welcome from "@/components/Welcome.vue";
 import MainBlock from "@/components/MainBlock.vue";
 import Forecast from "@/components/Forecast.vue";
@@ -46,6 +53,7 @@ export default {
   name: "Home",
 
   components: {
+    Toast,
     Welcome,
     MainBlock,
     Forecast,
@@ -65,33 +73,42 @@ export default {
       forecastListOfDay: null,
       forecastListForEachDay: null,
       averageTempOfDay: null,
-      loading: false,
       error: false
     };
   },
 
   mounted() {
-    if (localStorage.apiKey) {
-      this.apiKey = localStorage.apiKey;
-      this.$store.commit("setApiKey", this.apiKey);
-      this.findLocation();
+    let checkLocalStorageApiKeyInterval = setInterval(() => {
+      if (localStorage.apiKey) {
+        this.apiKey = localStorage.apiKey;
+        this.$store.commit("setApiKey", this.apiKey);
+        this.findLocation(...this.storeCoords);
 
-      const interval = setInterval(() => {
-        if (this.today.date) {
-          this.setActiveDay(this.getConvertedDate(this.today.date));
-          clearInterval(interval);
-        }
-      }, 0);
-    }
+        const checkTodayInterval = setInterval(() => {
+          if (this.today.date) {
+            this.setActiveDay(this.getConvertedDate(this.today.date));
+            clearInterval(checkTodayInterval);
+          }
+        }, 100);
+        clearInterval(checkLocalStorageApiKeyInterval);
+      }
+    }, 0);
   },
 
   methods: {
-    findLocation() {
-      this.loading = true;
+    findLocation(lat = null, lon = null) {
+      this.$store.commit("setLoading", true);
+      let latitude;
+      let longitude;
 
       const success = async location => {
-        let latitude = await location?.coords?.latitude;
-        let longitude = await location?.coords?.longitude;
+        if (!lat && !lon) {
+          latitude = await location?.coords?.latitude;
+          longitude = await location?.coords?.longitude;
+        } else {
+          latitude = lat;
+          longitude = lon;
+        }
 
         if (latitude && longitude) {
           if (this.mapCoords.length === 2) {
@@ -100,7 +117,6 @@ export default {
           } else {
             this.mapCoords.push(latitude, longitude);
           }
-          console.log("this.mapCoords :>> ", this.mapCoords);
         }
 
         axios
@@ -117,7 +133,7 @@ export default {
             this.error = error;
             this.$store.commit("setApiKey", "");
           })
-          .finally(() => (this.loading = false));
+          .finally(() => this.$store.commit("setLoading", false));
 
         axios
           .get(
@@ -232,6 +248,9 @@ export default {
     },
     activeDay() {
       return this.$store.state.activeDay;
+    },
+    storeCoords() {
+      return this.$store.state.coords;
     }
   }
 };

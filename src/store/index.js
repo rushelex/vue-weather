@@ -6,7 +6,9 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     apiKey: null,
-    activeDay: null
+    activeDay: null,
+    coords: [],
+    loading: false
   },
   mutations: {
     setApiKey(state, payload) {
@@ -15,6 +17,12 @@ export default new Vuex.Store({
     },
     setActiveDay(state, payload) {
       state.activeDay = payload;
+    },
+    setCoords(state, payload) {
+      state.coords = payload;
+    },
+    setLoading(state, payload) {
+      state.loading = payload;
     }
   },
   actions: {},

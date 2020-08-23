@@ -1,12 +1,18 @@
 <template>
-  <div class="card">
+  <div class="card" :class="{ skeleton: loading }">
     <slot />
   </div>
 </template>
 
 <script>
 export default {
-  name: "Card"
+  name: "Card",
+
+  computed: {
+    loading() {
+      return this.$store.state.loading;
+    }
+  }
 };
 </script>
 
@@ -17,5 +23,9 @@ export default {
   border-radius: 10px;
   background-color: #ffffff;
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+
+  &.skeleton {
+    padding: 20px !important;
+  }
 }
 </style>

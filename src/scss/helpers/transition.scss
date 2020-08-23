@@ -7,3 +7,18 @@
 .fade-leave-to {
   opacity: 0;
 }
+
+// easeOutBounce
+.easeOutBounce-enter-active,
+.easeOutBounce-leave-active {
+  animation: easeOutBounce 0.5s;
+}
+
+@keyframes easeOutBounce {
+  0% { transform: translate3d(0, -100%, 0); }
+  36% { transform: translate3d(0, 0%, 0); }
+  54% { transform: translate3d(0, -8%, 0); }
+  74% { transform: translate3d(0, 0%, 0); }
+  82% { transform: translate3d(0, -4%, 0); }
+  100% { transform: translate3d(0, 0%, 0); }
+}

@@ -1,6 +1,15 @@
 <template>
-  <Card v-if="this.localCoords.length === 2" class="map">
+  <Card
+    class="map"
+    :class="{ skeletonLoaded: loading && this.localCoords.length === 2 }"
+  >
+    <Skeleton
+      v-if="loading && this.localCoords.length !== 2"
+      width="100%"
+      height="100%"
+    />
     <yandex-map
+      v-else
       :settings="this.ymapSettings"
       :coords="this.localCoords"
       @click="getPosition"
@@ -16,6 +25,7 @@
 
 <script>
 import Card from "@/components/Card.vue";
+import Skeleton from "@/components/Skeleton.vue";
 import { yandexMap, ymapMarker } from "vue-yandex-maps";
 
 export default {
@@ -23,6 +33,7 @@ export default {
 
   components: {
     Card,
+    Skeleton,
     yandexMap,
     ymapMarker
   },
@@ -47,8 +58,14 @@ export default {
   methods: {
     getPosition(e) {
       this.localCoords = e.get("coords");
-      // this.findLocation();
-      // console.log("this.localCoords :>> ", this.localCoords);
+      this.findLocation(...this.localCoords);
+      this.$store.commit("setCoords", this.localCoords);
+    }
+  },
+
+  computed: {
+    loading() {
+      return this.$store.state.loading;
     }
   }
 };
@@ -60,6 +77,16 @@ export default {
 .map {
   height: 500px;
   margin-top: 50px;
+  padding: 0;
+  overflow: hidden;
+
+  &.skeletonLoaded {
+    padding: 0 !important;
+
+    &::after {
+      display: none;
+    }
+  }
 }
 
 .ymap-container {

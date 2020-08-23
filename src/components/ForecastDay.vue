@@ -1,6 +1,12 @@
 <template>
-  <div class="forecast-day">
-    <div class="forecast-day__inner">
+  <div class="forecast-day" :class="{ skeleton: loading }">
+    <Skeleton
+      v-if="loading"
+      width="100%"
+      height="143px"
+      class="forecast-day__inner"
+    />
+    <div v-else class="forecast-day__inner">
       <div
         class="forecast-day__item item"
         v-for="item in getForecastListOfDay(this.forecastList)"
@@ -27,8 +33,14 @@
 </template>
 
 <script>
+import Skeleton from "@/components/Skeleton.vue";
+
 export default {
   name: "ForecastDay",
+
+  components: {
+    Skeleton
+  },
 
   props: {
     activeDay: String,
@@ -56,6 +68,12 @@ export default {
       if (!str) return str;
       return str[0].toUpperCase() + str.slice(1);
     }
+  },
+
+  computed: {
+    loading() {
+      return this.$store.state.loading;
+    }
   }
 };
 </script>
@@ -68,6 +86,15 @@ export default {
   margin-top: 20px;
   padding: 20px 0;
   border-top: 1px solid #e0e0e0;
+
+  &.skeleton {
+    width: 100%;
+    padding: 0;
+
+    &::after {
+      display: none;
+    }
+  }
 
   &__inner {
     display: flex;

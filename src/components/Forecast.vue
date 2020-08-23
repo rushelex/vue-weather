@@ -1,13 +1,23 @@
 <template>
-  <Card class="forecast">
+  <Card
+    class="forecast"
+    :class="{ skeletonLoaded: loading && this.forecastListForEachDay }"
+  >
+    <Skeleton
+      v-if="loading && !this.forecastListForEachDay"
+      width="100%"
+      height="110px"
+      class="forecast__day day"
+    />
     <div
+      v-else
       v-for="(value, key) in this.forecastListForEachDay"
       :key="value.dt"
       class="forecast__day day"
       :class="{ active: key === activeDay }"
       @click="
         () => {
-          findLocation();
+          findLocation(...coords);
           setActiveDay(key);
         }
       "
@@ -27,12 +37,14 @@
 
 <script>
 import Card from "@/components/Card.vue";
+import Skeleton from "@/components/Skeleton.vue";
 
 export default {
   name: "Forecast",
 
   components: {
-    Card
+    Card,
+    Skeleton
   },
 
   props: {
@@ -40,12 +52,6 @@ export default {
     findLocation: Function,
     getTempC: Function,
     setActiveDay: Function
-  },
-
-  computed: {
-    activeDay() {
-      return this.$store.state.activeDay;
-    }
   },
 
   methods: {
@@ -64,6 +70,18 @@ export default {
 
       return averageTemp;
     }
+  },
+
+  computed: {
+    activeDay() {
+      return this.$store.state.activeDay;
+    },
+    coords() {
+      return this.$store.state.coords;
+    },
+    loading() {
+      return this.$store.state.loading;
+    }
   }
 };
 </script>
@@ -76,6 +94,14 @@ export default {
   padding: 0;
   display: flex;
   overflow: hidden;
+
+  &.skeletonLoaded {
+    padding: 0 !important;
+
+    &::after {
+      display: none;
+    }
+  }
 
   .day {
     position: relative;
@@ -122,6 +148,14 @@ export default {
         top: 0;
         bottom: 0;
         opacity: 0;
+      }
+    }
+
+    &.skeleton {
+      cursor: default;
+
+      &:hover {
+        box-shadow: initial;
       }
     }
 
