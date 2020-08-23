@@ -24,8 +24,8 @@
 </template>
 
 <script>
-import Card from "@/components/Card.vue";
-import Skeleton from "@/components/Skeleton.vue";
+import Card from "@/components/Card";
+import Skeleton from "@/components/Skeleton";
 import { yandexMap, ymapMarker } from "vue-yandex-maps";
 
 export default {

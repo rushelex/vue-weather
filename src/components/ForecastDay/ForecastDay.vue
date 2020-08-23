@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import Skeleton from "@/components/Skeleton.vue";
+import Skeleton from "@/components/Skeleton";
 
 export default {
   name: "ForecastDay",

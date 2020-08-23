@@ -49,9 +49,9 @@
 </template>
 
 <script>
-import Card from "@/components/Card.vue";
-import Skeleton from "@/components/Skeleton.vue";
-import ForecastDay from "@/components/ForecastDay.vue";
+import Card from "@/components/Card";
+import Skeleton from "@/components/Skeleton";
+import ForecastDay from "@/components/ForecastDay";
 
 export default {
   name: "MainBlock",

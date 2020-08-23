@@ -43,11 +43,11 @@
 
 <script>
 import axios from "axios";
-import Toast from "@/components/Toast.vue";
-import Welcome from "@/components/Welcome.vue";
-import MainBlock from "@/components/MainBlock.vue";
-import Forecast from "@/components/Forecast.vue";
-import Map from "@/components/Map.vue";
+import Toast from "@/components/Toast";
+import Welcome from "@/components/Welcome";
+import MainBlock from "@/components/MainBlock";
+import Forecast from "@/components/Forecast";
+import Map from "@/components/Map";
 
 export default {
   name: "Home",

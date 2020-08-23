@@ -36,8 +36,8 @@
 </template>
 
 <script>
-import Card from "@/components/Card.vue";
-import Skeleton from "@/components/Skeleton.vue";
+import Card from "@/components/Card";
+import Skeleton from "@/components/Skeleton";
 
 export default {
   name: "Forecast",

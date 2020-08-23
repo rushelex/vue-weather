@@ -10,7 +10,12 @@
 export default {
   name: "Toast",
 
-  props: ["error"]
+  props: {
+    error: {
+      default: false,
+      type: undefined
+    }
+  }
 };
 </script>
 

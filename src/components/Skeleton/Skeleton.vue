@@ -5,6 +5,7 @@
 <script>
 export default {
   name: "Skeleton",
+
   props: {
     maxWidth: {
       default: 100,
@@ -23,6 +24,7 @@ export default {
       type: String
     }
   },
+
   computed: {
     computedWidth() {
       return (
