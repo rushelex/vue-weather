@@ -1,12 +1,15 @@
 import { shallowMount } from "@vue/test-utils";
 import Toast from "@/components/Toast";
 
-describe("Toast.vue", () => {
-  it("Показывает Toast при props.error !== false", () => {
+describe("Toast.vue:", () => {
+  it("показывается при props.error не равным false", () => {
     const error = true || Object;
-    const wrapper = shallowMount(Toast, {
+
+    shallowMount(Toast, {
       propsData: { error }
     });
-    expect(error).toBe(!false);
+
+    expect(error).toBeDefined();
+    expect(error).toBeTruthy();
   });
 });
