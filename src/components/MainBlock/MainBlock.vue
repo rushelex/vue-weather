@@ -80,7 +80,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/scss";
+@import "~@/scss";
 
 .main {
   padding-bottom: 0px;

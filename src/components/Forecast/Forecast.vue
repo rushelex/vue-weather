@@ -87,7 +87,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/scss";
+@import "~@/scss";
 
 .forecast {
   margin-top: 50px;

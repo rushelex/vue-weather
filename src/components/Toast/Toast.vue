@@ -20,7 +20,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/scss";
+@import "~@/scss";
 
 .toast {
   position: absolute;

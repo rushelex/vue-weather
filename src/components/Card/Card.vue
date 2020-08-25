@@ -17,12 +17,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~@/scss";
+
 .card {
   width: 100%;
   padding: 20px;
   border-radius: 10px;
   background-color: #ffffff;
-  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);
 
   &.skeleton {
     padding: 20px !important;

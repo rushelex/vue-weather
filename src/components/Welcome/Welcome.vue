@@ -3,14 +3,16 @@
     <Card>
       <div class="welcome__title">Введите API-ключ</div>
       <div class="welcome__body">
-        <input
-          type="text"
-          class="welcome__input welcome__input--api"
-          placeholder="API-ключ"
-          autofocus
-          v-model="localApiKey"
-          @keypress.enter="setApiKey(localApiKey)"
-        />
+        <label>
+          <input
+            type="text"
+            class="welcome__input welcome__input--api"
+            placeholder="API-ключ"
+            autofocus
+            v-model="localApiKey"
+            @keypress.enter="setApiKey(localApiKey)"
+          />
+        </label>
         <button
           class="welcome__submit"
           :class="{ active: localApiKey }"
@@ -61,7 +63,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/scss";
+@import "~@/scss";
 
 .welcome {
   position: absolute;

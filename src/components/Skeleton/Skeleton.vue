@@ -39,6 +39,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import "~@/scss";
+
 .skeleton {
   position: relative;
   display: inline-block;

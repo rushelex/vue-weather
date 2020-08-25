@@ -3,7 +3,7 @@ import Toast from "@/components/Toast";
 
 describe("Toast.vue:", () => {
   it("показывается при props.error не равным false", () => {
-    const error = true || Object;
+    const error = true;
 
     shallowMount(Toast, {
       propsData: { error }

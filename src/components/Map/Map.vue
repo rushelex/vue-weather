@@ -72,7 +72,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/scss";
+@import "~@/scss";
 
 .map {
   height: 500px;
