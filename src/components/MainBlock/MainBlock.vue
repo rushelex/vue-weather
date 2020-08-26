@@ -59,7 +59,7 @@ export default {
   components: {
     Card,
     Skeleton,
-    ForecastDay
+    ForecastDay,
   },
 
   props: {
@@ -68,98 +68,17 @@ export default {
     activeDay: String,
     getTime: Function,
     getTempC: Function,
-    getConvertedDate: Function
+    getConvertedDate: Function,
   },
 
   computed: {
     loading() {
       return this.$store.state.loading;
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "@/scss";
-
-.main {
-  padding-bottom: 0px;
-
-  &__header {
-    position: relative;
-    display: flex;
-    min-height: 120px;
-  }
-
-  &__icon {
-    position: absolute;
-    top: 50%;
-    right: 0;
-    width: 100px;
-    transform: translateY(-50%);
-    filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.6));
-    pointer-events: none;
-    user-select: none;
-    -webkit-user-drag: none;
-
-    &.skeleton {
-      filter: initial;
-    }
-  }
-
-  .temp {
-    display: flex;
-    pointer-events: none;
-    user-select: none;
-
-    &__number {
-      font-size: 68px;
-      font-weight: 700;
-      line-height: 100%;
-    }
-
-    &__unit {
-      margin-top: 5px;
-      margin-bottom: auto;
-      font-size: 30px;
-      font-weight: 500;
-      line-height: 100%;
-    }
-  }
-
-  .title {
-    font-size: 40px;
-    font-weight: 500;
-    line-height: 100%;
-    margin-left: 40px;
-    pointer-events: none;
-    user-select: none;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .main {
-    &__header {
-      flex-direction: column-reverse;
-    }
-
-    &__temp {
-      margin-top: 20px;
-    }
-
-    &__icon {
-      top: initial;
-      bottom: -20px;
-      transform: initial;
-
-      &.skeleton {
-        bottom: 0;
-      }
-    }
-
-    .title {
-      margin-left: 0;
-    }
-  }
-}
+@import "./_MainBlock.scss";
 </style>

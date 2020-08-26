@@ -12,20 +12,20 @@
     <transition name="fade">
       <MainBlock
         v-if="storeApiKey"
-        :today="this.today"
-        :forecastList="this.forecastList"
         :activeDay="this.activeDay"
-        :getTime="this.getTime"
-        :getTempC="this.getTempC"
+        :forecastList="this.forecastList"
         :getConvertedDate="this.getConvertedDate"
+        :getTempC="this.getTempC"
+        :getTime="this.getTime"
+        :today="this.today"
       />
     </transition>
 
     <transition name="fade">
       <Forecast
         v-if="storeApiKey"
-        :forecastListForEachDay="this.forecastListForEachDay"
         :findLocation="this.findLocation"
+        :forecastListForEachDay="this.forecastListForEachDay"
         :getTempC="this.getTempC"
         :setActiveDay="this.setActiveDay"
       />
@@ -57,7 +57,7 @@ export default {
     Welcome,
     MainBlock,
     Forecast,
-    Map
+    Map,
   },
 
   data() {
@@ -66,14 +66,14 @@ export default {
       today: {
         date: null,
         temp: null,
-        icon: null
+        icon: null,
       },
       mapCoords: [],
       forecastList: null,
       forecastListOfDay: null,
       forecastListForEachDay: null,
       averageTempOfDay: null,
-      error: false
+      error: false,
     };
   },
 
@@ -96,15 +96,32 @@ export default {
   },
 
   methods: {
+    /**
+     * Location request from the user,
+     * followed by a request for a weather forecast
+     *
+     * @param {number|*} lat
+     * @param {number|*} lon
+     */
     findLocation(lat = null, lon = null) {
       this.$store.commit("setLoading", true);
       let latitude;
       let longitude;
 
-      const success = async location => {
+      /**
+       * Makes a request to the OpenWeatherMap API
+       * and receives a list of weather for 5 days
+       * with an interval of 3 hours
+       *
+       * @param {object} location
+       * @param {number} location.coords.latitude
+       * @param {number} location.coords.longitude
+       * @returns {Promise<void>}
+       */
+      const success = async (location) => {
         if (!lat && !lon) {
-          latitude = await location?.coords?.latitude;
-          longitude = await location?.coords?.longitude;
+          latitude = location?.coords?.latitude;
+          longitude = location?.coords?.longitude;
         } else {
           latitude = lat;
           longitude = lon;
@@ -119,104 +136,126 @@ export default {
           }
         }
 
+        // Weather request for the current time
         axios
           .get(
             `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${this.storeApiKey}&lang=ru`
           )
-          .then(response => {
+          .then((response) => {
             this.today.date = response?.data?.dt;
             this.today.temp = response?.data?.main?.temp;
             this.today.icon = response?.data?.weather?.[0]?.icon;
             this.error = false;
           })
-          .catch(error => {
+          .catch((error) => {
             this.error = error;
             this.$store.commit("setApiKey", "");
           })
           .finally(() => this.$store.commit("setLoading", false));
 
+        // Main request for 5 days weather forecast
         axios
           .get(
             `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${this.storeApiKey}&lang=ru`
           )
-          .then(response => {
+          .then((response) => {
             this.forecastList = response.data.list;
             this.forecastListForEachDay = this.getForecastListForEachDay(
               this.forecastList
             );
             this.error = false;
           })
-          .catch(error => {
+          .catch((error) => {
             this.error = error;
             this.$store.commit("setApiKey", "");
           })
           .finally(() => (this.loading = false));
       };
 
-      const error = error => {
+      /**
+       * Writes an error to the component data if no location is obtained
+       *
+       * @param {any} error
+       */
+      const error = (error) => {
         this.error = error;
       };
 
       navigator.geolocation.getCurrentPosition(success, error);
     },
+
+    /**
+     * Converts a timestamp and returns the date in "dd MMMM" format
+     *
+     * @param {number} timestamp
+     */
+
     getDate(timestamp) {
       if (timestamp) {
         return new Date(timestamp * 1000).toLocaleDateString("ru", {
           day: "numeric",
-          month: "long"
+          month: "long",
         });
       }
     },
+
+    /**
+     * Returns a user-friendly date by converting a timestamp
+     *
+     * @param {number} timestamp
+     */
     getConvertedDate(timestamp) {
       let today =
-        this.getDate(timestamp)
-          .slice(0, 2)
-          .replace(/[, ]/g, "") ===
+        this.getDate(timestamp).slice(0, 2).replace(/[, ]/g, "") ===
         new Date().toLocaleDateString("ru", {
-          day: "numeric"
+          day: "numeric",
         });
       let tomorrow =
-        this.getDate(timestamp)
-          .slice(0, 2)
-          .replace(/[, ]/g, "") ===
+        this.getDate(timestamp).slice(0, 2).replace(/[, ]/g, "") ===
         String(+new Date().toLocaleDateString("ru", { day: "numeric" }) + 1);
 
-      if (today) {
-        return "Сегодня";
-      } else if (tomorrow) {
-        return "Завтра";
-      } else {
-        return this.getDate(timestamp);
-      }
+      return today ? "Сегодня" : tomorrow ? "Завтра" : this.getDate(timestamp);
     },
+
+    /**
+     * Returns formatted time by timestamp
+     *
+     * @param {number} timestamp
+     * @returns {string}
+     */
     getTime(timestamp) {
       let hours = new Date(timestamp * 1000).getHours();
       let minutes = new Date(timestamp * 1000).getMinutes();
-      let hours_formatted = /^[0-9]$/.test(hours) ? `0${hours}` : hours;
-      let minutes_formatted = /^[0-9]$/.test(minutes) ? `0${minutes}` : minutes;
+      let hours_formatted = /^[0-9]$/.test(String(hours)) ? `0${hours}` : hours;
+      let minutes_formatted = /^[0-9]$/.test(String(minutes))
+        ? `0${minutes}`
+        : minutes;
 
       return `${hours_formatted}:${minutes_formatted}`;
     },
+
+    /**
+     * Returns converted temperature from Kelvin to Celsius
+     *
+     * @param {string} temp
+     * @returns {string|number}
+     */
     getTempC(temp) {
-      if (typeof temp !== "number") {
-        return "--";
-      } else {
-        return Math.round(temp - 275.15);
-      }
+      return typeof temp === "number" ? Math.round(temp - 275.15) : "--";
     },
-    getTempF(temp) {
-      if (typeof temp !== "number") {
-        return "--";
-      } else {
-        return Math.round((temp - 275.15) * (9 / 5) + 32);
-      }
-    },
+
+    /**
+     * Returns the weather forecast object for each day
+     *
+     * @param {array} forecastList
+     * @returns {object} { "Сегодня": Object[], "Завтра": Object[], "dd.mm.yyyy": Object[], ... }
+     */
     getForecastListForEachDay(forecastList) {
       let lastDay = null;
       let lastDayForecast = [];
       let forecastListForEachDay = {};
 
-      forecastList.forEach(item => {
+      forecastList.forEach((item) => {
         if (this.getConvertedDate(item.dt) !== lastDay) {
           lastDay = this.getConvertedDate(item.dt);
           lastDayForecast = [];
@@ -234,9 +273,15 @@ export default {
 
       return forecastListForEachDay;
     },
+
+    /**
+     * Adds active day to the Store
+     *
+     * @param {string} convertedDate
+     */
     setActiveDay(convertedDate) {
       this.$store.commit("setActiveDay", convertedDate);
-    }
+    },
   },
 
   computed: {
@@ -251,20 +296,19 @@ export default {
     },
     storeCoords() {
       return this.$store.state.coords;
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "@/scss";
+@import "~@/scss";
 
 .home {
   width: 100%;
   max-width: calc(1200px + 30px);
   height: calc(100% - 64px);
-  margin: 0 auto;
-  margin-top: 64px;
+  margin: 64px auto 0;
   padding: 50px 15px;
   overflow: hidden;
   overflow-y: initial;

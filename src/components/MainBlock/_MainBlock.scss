@@ -1,0 +1,83 @@
+@import "~@/scss";
+
+.main {
+  padding-bottom: 0;
+
+  &__header {
+    position: relative;
+    min-height: 120px;
+    display: flex;
+  }
+
+  &__icon {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 100px;
+    user-select: none;
+    transform: translateY(-50%);
+    pointer-events: none;
+    filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.6));
+    -webkit-user-drag: none;
+
+    &.skeleton {
+      filter: initial;
+    }
+  }
+
+  .temp {
+    display: flex;
+    user-select: none;
+    pointer-events: none;
+
+    &__number {
+      font-size: 68px;
+      font-weight: 700;
+      line-height: 100%;
+    }
+
+    &__unit {
+      margin-top: 5px;
+      margin-bottom: auto;
+      font-size: 30px;
+      font-weight: 500;
+      line-height: 100%;
+    }
+  }
+
+  .title {
+    margin-left: 40px;
+    user-select: none;
+    pointer-events: none;
+    font-size: 40px;
+    font-weight: 500;
+    line-height: 100%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .main {
+    &__header {
+      flex-direction: column-reverse;
+    }
+
+    &__temp {
+      margin-top: 20px;
+    }
+
+    &__icon {
+      top: initial;
+      bottom: -20px;
+      transform: initial;
+
+      &.skeleton {
+        bottom: 0;
+      }
+    }
+
+    .title {
+      margin-left: 0;
+    }
+  }
+}
+

@@ -8,7 +8,7 @@ export default new Vuex.Store({
     apiKey: null,
     activeDay: null,
     coords: [],
-    loading: false
+    loading: false,
   },
   mutations: {
     setApiKey(state, payload) {
@@ -23,8 +23,8 @@ export default new Vuex.Store({
     },
     setLoading(state, payload) {
       state.loading = payload;
-    }
+    },
   },
   actions: {},
-  modules: {}
+  modules: {},
 });

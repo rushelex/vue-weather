@@ -35,12 +35,12 @@ export default {
     Card,
     Skeleton,
     yandexMap,
-    ymapMarker
+    ymapMarker,
   },
 
   props: {
     coords: Array,
-    findLocation: Function
+    findLocation: Function,
   },
 
   data() {
@@ -50,46 +50,33 @@ export default {
         apiKey: "88a99d43-03f8-4572-be63-fae267111ff9",
         lang: "ru_RU",
         coordorder: "latlong",
-        version: "2.1"
-      }
+        version: "2.1",
+      },
     };
   },
 
   methods: {
+    /**
+     * 1. Runs the this.findLocation() function
+     * 2. Adds an array with latitude and longitude coordinates to the Store when clicking on the map
+     *
+     * @param {object} e
+     */
     getPosition(e) {
       this.localCoords = e.get("coords");
       this.findLocation(...this.localCoords);
       this.$store.commit("setCoords", this.localCoords);
-    }
+    },
   },
 
   computed: {
     loading() {
       return this.$store.state.loading;
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "@/scss";
-
-.map {
-  height: 500px;
-  margin-top: 50px;
-  padding: 0;
-  overflow: hidden;
-
-  &.skeletonLoaded {
-    padding: 0 !important;
-
-    &::after {
-      display: none;
-    }
-  }
-}
-
-.ymap-container {
-  height: 100%;
-}
+@import "./_Map.scss";
 </style>
