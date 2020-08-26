@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap");
 
 * {
   box-sizing: inherit;
@@ -7,13 +7,35 @@
 
 html,
 body {
+  box-sizing: border-box;
   height: 100%;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
   overflow: hidden;
 }
 
 html {
   background-color: #eceef2;
+  font-family: "Montserrat", "Avenir", "Helvetica", "Arial", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+  height: 100%;
+  overflow: hidden;
+  color: #2c3e50;
+}
+
+#nav {
+  padding: 30px;
+
+  a {
+    color: #2c3e50;
+    font-weight: 700;
+
+    &.router-link-exact-active {
+      color: #42b983;
+    }
+  }
 }

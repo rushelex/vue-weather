@@ -1,0 +1,21 @@
+@import "~@/scss";
+
+.map {
+  height: 500px;
+  margin-top: 50px;
+  padding: 0;
+  overflow: hidden;
+  pointer-events: all;
+
+  &.skeletonLoaded {
+    padding: 0 !important;
+
+    &::after {
+      display: none;
+    }
+  }
+}
+
+.ymap-container {
+  height: 100%;
+}

@@ -6,7 +6,7 @@ describe("Toast.vue:", () => {
     const error = true;
 
     shallowMount(Toast, {
-      propsData: { error }
+      propsData: { error },
     });
 
     expect(error).toBeDefined();

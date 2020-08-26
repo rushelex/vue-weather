@@ -13,38 +13,12 @@ export default {
   props: {
     error: {
       default: false,
-      type: undefined
-    }
-  }
+      type: undefined,
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-@import "~@/scss";
-
-.toast {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 999999;
-  width: auto;
-  min-width: 200px;
-  height: 50px;
-  padding: 5px 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: $errorColorBg;
-  border-radius: 5px;
-  font-size: 14px;
-  font-weight: 500;
-  color: #ffffff;
-}
-
-@media screen and (max-width: 768px) {
-  .toast {
-    top: 15px;
-    left: 20px;
-  }
-}
+@import "./_Toast.scss";
 </style>
