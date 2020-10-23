@@ -1,5 +1,6 @@
 # weather-app
-Web application that shows the weather for the next 5 days
+Web application that shows the weather for the next 5 days.
+To get the API key, you need to register on the [website](https://openweathermap.org) and get the key in the section [My API Keys](https://home.openweathermap.org/api_keys)
 
 ## Project setup
 ```
